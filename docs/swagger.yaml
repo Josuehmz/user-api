@@ -1,0 +1,175 @@
+basePath: /
+definitions:
+  dto.UserDTO:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  dto.UserPatchDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API RESTful para gestión de usuarios
+  title: User API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      description: Obtiene todos los usuarios
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.UserDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Listar usuarios
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo usuario
+      parameters:
+      - description: Usuario a crear
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Crear usuario
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Elimina un usuario por ID
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Eliminar usuario
+      tags:
+      - users
+    get:
+      description: Retorna un usuario dado su ID
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserDTO'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Obtener usuario por ID
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Actualiza solo los campos enviados
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Campos a actualizar
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserPatchDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Actualizar parcialmente un usuario
+      tags:
+      - users
+swagger: "2.0"

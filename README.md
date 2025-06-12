@@ -45,7 +45,7 @@ MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/?retryWrites=
 DB_NAME=userdb
 DB_COLLECTION=users
 ```
-*Nota: El archivo `.env` con los valores de las variables para la conexión, se comparten por correo. Este archivo se debe ubicar en la raíz del proyecto *
+*Nota: El archivo `.env` con los valores de las variables para la conexión, se comparten por correo. Este archivo se debe ubicar en la raíz del proyecto*
 ### 3. Instalar Docker Desktop
 
 Asegúrate de tener instalado Docker:  

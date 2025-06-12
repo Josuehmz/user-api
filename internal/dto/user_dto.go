@@ -6,6 +6,8 @@ import (
 	"github.com/Josuehmz/user-api/internal/domain"
 )
 
+// UserDTO representa el objeto de transferencia de datos para la entidad User.
+// Se utiliza para enviar y recibir datos en la API.
 type UserDTO struct {
 	ID        string    `json:"id,omitempty" bson:"_id,omitempty"`
 	Name      string    `json:"name" bson:"name"`
@@ -14,6 +16,7 @@ type UserDTO struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty" bson:"updatedat,omitempty"`
 }
 
+// FromDomain convierte un objeto de dominio User a un DTO.
 func FromDomain(u *domain.User) *UserDTO {
 	return &UserDTO{
 		ID:        u.ID,
@@ -24,6 +27,7 @@ func FromDomain(u *domain.User) *UserDTO {
 	}
 }
 
+// ToDomain convierte un DTO a un objeto de dominio User.
 func ToDomain(dto *UserDTO) *domain.User {
 	return &domain.User{
 		ID:        dto.ID,

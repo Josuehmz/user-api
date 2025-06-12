@@ -11,14 +11,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// userMongoRepository implementa la interfaz UserRepository usando MongoDB.
 type userMongoRepository struct {
 	collection *mongo.Collection
 }
 
+// NewUserMongoRepository crea un nuevo repositorio de usuarios con MongoDB.
 func NewUserMongoRepository(col *mongo.Collection) domain.UserRepository {
 	return &userMongoRepository{collection: col}
 }
 
+// Create inserta un nuevo usuario en la colección.
 func (r *userMongoRepository) Create(ctx context.Context, user *domain.User) error {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
@@ -33,6 +36,7 @@ func (r *userMongoRepository) Create(ctx context.Context, user *domain.User) err
 	return nil
 }
 
+// GetAll retorna todos los usuarios de la colección.
 func (r *userMongoRepository) GetAll(ctx context.Context) ([]domain.User, error) {
 	cursor, err := r.collection.Find(ctx, bson.M{})
 	if err != nil {
@@ -42,7 +46,6 @@ func (r *userMongoRepository) GetAll(ctx context.Context) ([]domain.User, error)
 
 	var users []domain.User
 	for cursor.Next(ctx) {
-
 		var raw bson.M
 		if err := cursor.Decode(&raw); err != nil {
 			return nil, err
@@ -67,6 +70,7 @@ func (r *userMongoRepository) GetAll(ctx context.Context) ([]domain.User, error)
 	return users, nil
 }
 
+// GetByID busca un usuario por su ID en MongoDB.
 func (r *userMongoRepository) GetByID(ctx context.Context, id string) (*domain.User, error) {
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -85,6 +89,7 @@ func (r *userMongoRepository) GetByID(ctx context.Context, id string) (*domain.U
 	return &user, nil
 }
 
+// Update reemplaza todos los campos de un usuario por su ID.
 func (r *userMongoRepository) Update(ctx context.Context, user *domain.User) error {
 	objID, err := primitive.ObjectIDFromHex(user.ID)
 	if err != nil {
@@ -104,6 +109,7 @@ func (r *userMongoRepository) Update(ctx context.Context, user *domain.User) err
 	return err
 }
 
+// Delete elimina un usuario de la colección por su ID.
 func (r *userMongoRepository) Delete(ctx context.Context, id string) error {
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -113,6 +119,8 @@ func (r *userMongoRepository) Delete(ctx context.Context, id string) error {
 	_, err = r.collection.DeleteOne(ctx, bson.M{"_id": objID})
 	return err
 }
+
+// UpdatePartial actualiza solo campos específicos de un usuario.
 func (r *userMongoRepository) UpdatePartial(ctx context.Context, id string, fields map[string]interface{}) error {
 	if len(fields) == 0 {
 		return nil

@@ -9,10 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UserHandler define los controladores HTTP para las rutas de usuario.
 type UserHandler struct {
 	userUC usecase.UserUseCaseInterface
 }
 
+// NewUserHandler crea una nueva instancia de UserHandler.
 func NewUserHandler(userUC usecase.UserUseCaseInterface) *UserHandler {
 	return &UserHandler{userUC: userUC}
 }
